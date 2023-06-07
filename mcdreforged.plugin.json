@@ -1,0 +1,22 @@
+{
+	"id": "auto_command",
+	"version": "1.0.0",
+	"name": "Auto Command",
+	"description": {
+		"en_us": "A plugin that send send commands automaticly",
+		"zh_cn": "自动发送指令的插件"
+	},
+	"author": [
+		"bzyyyyyyyy"
+	],
+	"link": "https://github.com/bzyyyyyyyy/MCDR-AutoCommand",
+	"dependencies": {
+		"mcdreforged": ">=2.1.2"
+	},
+
+	"archive_name": "AutoCommand-v{version}",
+	"resources": [
+		"lang",
+		"LICENSE"
+	]
+}

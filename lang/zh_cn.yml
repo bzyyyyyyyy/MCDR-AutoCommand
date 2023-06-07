@@ -1,0 +1,114 @@
+auto_command:
+  help_message: |
+    ------ {1} v{2} ------
+    一个支持将指令§6打包成指令堆§r&§b自动发送§r插件
+    §7{0}§r 显示帮助信息
+    §7{0} make §6<指令堆名> §d<使用权限> §e[<可选注释>]§r 创建一个新指令堆
+    §7{0} stack §6<指令堆名> §r§7add §6<指令>§r 在§6<指令堆名>§r的末尾添加一行指令
+    §7{0} stack §6<指令堆名> §r§7before §6<指令行> <指令>§r 在§6<指令堆名>§r的§6<指令行>§r前添加一行指令
+    §7{0} stack §6<指令堆名> §r§7edit §6<指令行> <指令>§r 将§6<指令行>§r的指令改为§6<指令>
+    §7{0} stack §6<指令堆名> §r§7del §6[<可选指令行>]§r 删除§6<指令堆名>§r中§6<可选指令行>§r的命令（如果§6<可选指令行>§r为空，则删除§6<指令堆名>§r中的最后一行指令）
+    §7{0} stack §6<指令堆名> §r 显示§6<指令堆名>§r的信息和其中的所有指令及注释
+    §7{0} stack §6<指令堆名> §r§7perm §d<使用权限>§r 将§6<指令堆名>§r的使用权限更改为§d<使用权限>
+    §7{0} send §6<指令堆名>§r 依次发送§6<指令堆名>§r中的所有指令
+    §7{0} del §6<指令堆名>§r 删除指令堆§6<指令堆名>
+    §7{0} list §a[<可选页号>]§r 显示所有指令堆及注释
+    §7{0} search §6<关键字> §a[<可选页号>]§r 搜索指令堆，返回所有匹配项
+    该插件自带两个§d使用权限§r为§d3§r的空指令堆§6<server_start>§r和§6<timed_command>
+    服务器开启时自动依次发送§6<server_start>§r中的所有指令
+    间隔§b<分钟>§r分钟自动依次发送§6<timed_command>§r中的所有指令
+    §7{0} tc§r 显示间隔的§b<分钟>§r和§6<timed_command>§r的信息和其中的所有指令及注释
+    §7{0} tc enable§r 启动发送指令定时器
+    §7{0} tc disable§r 关闭发送指令定时器
+    §7{0} tc set_interval §b<分钟>§r 设置发送指令定时器的时间间隔，单位分钟
+    §7{0} tc reset_timer§r 重置发送指令定时器
+  
+  make_command_stack:
+    exist: 指令堆§6{}§r已存在，无法添加
+    fail: 指令堆§6{}§r添加§c失败§r：{}
+    success: 指令堆§6{}§r添加§a成功
+  
+  stack_add_command:
+    unknown_stack: 未找到指令堆§6{}§r，无法添加指令
+    fail: 指令添加§c失败§r：§6{}
+    success: §a成功§r添加指令到§6{}§r中的第§6{}§r行
+  
+  stack_edit_command:
+    unknown_stack: 未找到指令堆§6{}§r，无法编辑指令
+    fail: 指令编辑§c失败§r：§6{}
+    success: §a成功§r编辑§6{}§r中的第§6{}§r行指令
+  
+  stack_del_command:
+    unknown_stack: 未找到指令堆§6{}§r，无法删除指令
+    fail: 指令删除§c失败§r：§6{}
+    success: §a成功§r删除§6{}§r中的第§6{}§r行指令
+  
+  stack_perm:
+    unknown_stack: 未找到指令堆§6{}§r，无法修改使用权限
+    fail: 修改使用权限§c失败§r：§6{}
+    success: §a成功§r修改使用权限：§6{}
+  
+  del_command_stack:
+    unknown_stack: 未找到指令堆§6{}§r，无法删除
+    fail: 指令堆§6{}§r删除§c失败§r：{}
+    success: 指令堆§6{}§r删除§a成功
+  
+  send_command_stack:
+    unknown_stack: 未找到指令堆§6{}§r，无法发送
+    fail: 指令堆§6{}§r发送§c失败§r：{}
+    success: 指令堆§6{}§r发送§a成功
+  
+  list_command_stack:
+    perm_hover: 使用权限
+    page_prev:
+      Y: 点击显示上一页
+      N: 已经是第一页了
+    page_next:
+      Y: 点击显示下一页
+      N: 已经是最后一页了
+    count:
+      list: 共有§6{}§r个指令堆
+      search: 共找到§6{}§r个指令堆
+
+  command_stack_info:
+    name:
+      指令堆名：§6{}
+    perm:
+      header: §d使用权限§r：§d{}
+      hover: 点击更改使用权限
+    desc: 详情：{}
+    send:
+      header: ">>> §a发送指令堆 §r<<<"
+      hover: 点击发送指令堆
+    text: 【指令】
+    command:
+      before: 点击在这条指令前插入一条指令
+      delete: 点击删除这行指令
+      edit: 点击编辑这行指令
+    add:
+      header: ">>> §a添加一行指令 §r<<<"
+      hover: 点击添加一行指令
+    display: 点击查看指令堆详细信息
+  
+  server_start_desc: 服务器开启时发送指令堆
+  timed_command_desc: 间隔§b{}§r分钟发送指令堆
+
+  tc:
+    set_interval: 定时器触发间隔已设置为§b{0}§r分钟
+    reset_timer: 定时器已重置
+    on_unload: 插件卸载，停止时钟
+    on_remove: 插件被移除，停止时钟
+    set_enabled:
+      timer: "定时器已{0}"
+      start: 启动
+      stop: 关闭
+
+  unknown_command:
+    text: 参数错误！请输入§7{0}§r以获取插件信息
+    hover: 点击查看帮助
+  command:
+    permission_denied: 权限不足
+    unknown_command_stack: 未找到指令堆§6{}
+  register:
+    summary_help: 编辑/发送§6指令堆§r&§b自动发送指令
+    show_help: 点击查看帮助信息
