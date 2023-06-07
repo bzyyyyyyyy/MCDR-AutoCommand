@@ -8,7 +8,6 @@ from mcdreforged.api.all import *
 from auto_command.constant import Prefix, CONFIG_FILE, STORAGE_FILE
 from auto_command.storage import CommandStackStorage, CommandStack
 from auto_command.clock import TimedCommand
-from auto_command.interpreter import command_interpreter
 
 
 class Config(Serializable):
