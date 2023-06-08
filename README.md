@@ -7,6 +7,8 @@
 
 需要 `v2.1.0` 以上的 [MCDReforged](https://github.com/Fallen-Breath/MCDReforged)
 
+代码参考了 Fallen-Breath 的 [QuickBackupM](https://github.com/TISUnion/QuickBackupM)，[TimedQBM](https://github.com/TISUnion/TimedQBM) 和 [LocationMarker](https://github.com/TISUnion/LocationMarker)
+
 ## 命令格式说明
 
 `!!ac` 显示帮助信息
@@ -51,4 +53,137 @@
 
 ## 配置文件说明
 
-配置文件为 `config/QuickBackupM.json`。它会在第一次运行时自动生成
+### auto_command
+
+路径：`config/auto_command/auto_command.json`
+
+#### minimum_stack_edit_perm
+
+默认值：`3`
+
+编辑指令堆的最低权限要求
+
+如果该指令堆的使用权限高于编辑权限，则该指令堆的编辑权限等于使用权限
+
+拥有编辑权限的玩家可以：
+
+1. 创建指令堆（指令堆使用权限不可高于该玩家的权限）
+
+2. 编辑指令堆中的指令
+
+3. 更改指令堆的使用权限（更改后的权限不可高于该玩家的权限）
+
+4. 删除指令堆
+
+5. 发送指令堆
+
+#### stack_per_page
+
+默认值：`10`
+
+使用 `!!ac list <page>` 或 `!!ac search <keyword> <page>` 后
+
+每一页显示的指令堆数量
+
+#### timed_command_interval
+
+默认值：`30.0`
+
+发送指令定时器的时间间隔，单位分钟
+
+#### timed_command_enabled
+
+默认值：`true`
+
+是否启用发送指令定时器
+
+### command_stacks
+
+路径：`config/auto_command/command_stacks.json`
+
+示例：
+
+
+```
+{
+    "难度和平": {
+        "desc": "将难度更改为和平",
+        "perm": 3,
+        "command": [
+            "/difficulty peaceful",
+            "成功更改难度为和平"
+        ]
+    },
+    "peaceful": {
+        "desc": "set game difficulty to peaceful",
+        "perm": 3,
+        "command":  [
+            "/difficulty peaceful",
+            "set difficulty to peaceful successfully"
+        ]
+    }
+}
+```
+
+#### desc
+
+默认值：`null`
+
+指令堆的注释
+
+可以使用以 `§` 为前缀的传统样式代码
+如：`这是§b蓝色`
+
+#### perm
+
+范围：0 ~ 4
+
+指令堆的使用权限
+
+#### command
+
+默认值：`[]`
+
+当发送该指令堆时：
+
+如果指令以 `/` 开头，则通过发送到服务端的标准输入流来执行服务端指令
+
+如果指令以 `!!` 开头，则什么都不会发生（这一部分因为技术问题还没做好）
+
+其他情况则会在游戏中广播该指令
+
+## 内置指令堆
+
+### server_start
+
+默认值：
+
+```
+"server_start": {
+        "desc": "服务器开启时发送指令堆",
+        "perm": 3,
+        "command": []
+}
+```
+
+### timed_command
+
+默认值：
+
+```
+"timed_command": {
+        "desc": "间隔§b30.0§r分钟发送指令堆",
+        "perm": 3,
+        "command": []
+}
+```
+
+#### desc
+
+每次更新发送指令定时器的时间间隔时
+
+会同时更新该指令堆的注释
+
+### perm
+
+该指令堆的使用权限也是除 `!!ac tc` 以外的所有 `!!ac tc` 指令的使用权限

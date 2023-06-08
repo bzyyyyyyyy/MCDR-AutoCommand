@@ -17,7 +17,7 @@ auto_command:
     该插件自带两个§d使用权限§r为§d3§r的空指令堆§6<server_start>§r和§6<timed_command>
     服务器开启时自动依次发送§6<server_start>§r中的所有指令
     间隔§b<分钟>§r分钟自动依次发送§6<timed_command>§r中的所有指令
-    §7{0} tc§r 显示间隔的§b<分钟>§r和§6<timed_command>§r的信息和其中的所有指令及注释
+    §7{0} tc§r 显示§6<timed_command>§r的信息和其中的所有指令及注释
     §7{0} tc enable§r 启动发送指令定时器
     §7{0} tc disable§r 关闭发送指令定时器
     §7{0} tc set_interval §b<分钟>§r 设置发送指令定时器的时间间隔，单位分钟

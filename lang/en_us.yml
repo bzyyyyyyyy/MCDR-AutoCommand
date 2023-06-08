@@ -14,10 +14,10 @@ auto_command:
     §7{0} del §6<name>§r Delete this command stack
     §7{0} list §a[<page>]§r Display command stacks. §a[<page>] §ris optional
     §7{0} search §6<keyword> §a[<page>]§r Search for command stack. It gives back all command stacks that matches
-    This plugin has two builtin command stacks (§dpermission:3§r) which are §6<server_start>§rand§6<timed_command>
+    This plugin has two builtin command stacks (§dpermission:3§r) which are §6<server_start> §rand §6<timed_command>
     This plugin send all the command in the §6<server_start>§r in sequence automatically after server started
     This plugin send all the command in the §6<timed_command>§r in sequence every <minutes>
-    §7{0} tc§r Display information of the command stack sending timer and §6<timed_command>
+    §7{0} tc§r Display information of §6<timed_command>
     §7{0} tc enable§r Start the command stack sending timer
     §7{0} tc disable§r Disable the command stack sending timer
     §7{0} tc set_interval §b<minutes>§r Set the command stack sending timer interval in minutes
