@@ -1,7 +1,7 @@
 # MCDR-AutoCommand
 ---------
 
-**中文** | [English](./README.md)
+**中文** | [English](./README_en.md)
 
 一个支持将指令打包成指令堆&自动发送的插件
 
