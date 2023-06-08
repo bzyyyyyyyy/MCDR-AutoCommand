@@ -110,5 +110,5 @@ auto_command:
     permission_denied: Permission Denied
     unknown_command_stack: §6{} §rnot found
   register:
-    summory_help: Edit/send§6command stack§r&§bautomatically send commands
+    summory_help: Edit/send§6command stack §r& §bautomatically send commands
     show_help: Click to see help
