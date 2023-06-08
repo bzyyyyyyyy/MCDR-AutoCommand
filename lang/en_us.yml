@@ -4,11 +4,11 @@ auto_command:
     A plugin that supports §6assembling commands into stacks §rand §bsending them automatically
     §7{0}§r Display help message
     §7{0} make §6<name> §d<permission> §e[<comment>]§r Make a new command stack
+    §7{0} stack §6<name> §r Display information of this command stack
     §7{0} stack §6<name> §r§7add §6<command>§r Add a new command at the end of the command stack
     §7{0} stack §6<name> §r§7before §6<lineNo.> <commmand>§r Add a new command before the §6<lineNo.> §rof this command stack
     §7{0} stack §6<name> §r§7edit §6<lineNo.> <command>§r Change the command at §6<lineNo.> §rto §6<command>
     §7{0} stack §6<name> §r§7del §6[<lineNo.>]§r Delete the command at §6<lineNo.> §rof this command stack (Delete the last command if there's no §6<lineNo.>§r)
-    §7{0} stack §6<name> §r Display information of this command stack
     §7{0} stack §6<name> §r§7perm §d<level>§r Change the permission level of this command stack's usage into §d<level>
     §7{0} send §6<name>§r Send all the command in the command stack in sequence
     §7{0} del §6<name>§r Delete this command stack
