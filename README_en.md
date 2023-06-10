@@ -7,6 +7,8 @@ A plugin that supports assembling commands into stacks and sending them automati
 
 Needs `v2.1.0` + [MCDReforged](https://github.com/Fallen-Breath/MCDReforged)
 
+[MinecraftDataAPI](https://github.com/MCDReforged/MinecraftDataAPI/)
+
 I referred to [QuickBackupM](https://github.com/TISUnion/QuickBackupM)，[TimedQBM](https://github.com/TISUnion/TimedQBM), and [LocationMarker](https://github.com/TISUnion/LocationMarker) from Fallen-Breath
 
 ## Command
