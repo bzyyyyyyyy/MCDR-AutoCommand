@@ -57,6 +57,7 @@ auto_command:
     unknown_stack: §6{} §rnot found, unable to send
     fail: "§cFailed §rto send §6{}§r: {}"
     success: Send §6{} §asuccessfully
+    nested_loop: "detected nested loop: {}"
   
   list_command_stack:
     perm_hover: Usage permission
@@ -110,5 +111,5 @@ auto_command:
     permission_denied: Permission Denied
     unknown_command_stack: §6{} §rnot found
   register:
-    summory_help: Edit/send§6command stack §r& §bautomatically send commands
+    summory_help: Edit/send §6command stack §r& §bautomatically send commands
     show_help: Click to see help

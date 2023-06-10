@@ -57,6 +57,7 @@ auto_command:
     unknown_stack: 未找到指令堆§6{}§r，无法发送
     fail: 指令堆§6{}§r发送§c失败§r：{}
     success: 指令堆§6{}§r发送§a成功
+    nested_loop: 检测到嵌套循环：{}
   
   list_command_stack:
     perm_hover: 使用权限

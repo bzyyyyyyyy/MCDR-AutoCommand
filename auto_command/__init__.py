@@ -142,6 +142,13 @@ def add_command_stack(source: CommandSource, name, perm: int, desc=None):
 		)
 
 
+def use_interpreter(source: CommandSource, command):
+	if re.match('/player (.*) spawn here', command):
+		command = interpreter(source, command)
+	return command
+
+
+@new_thread('add_command')
 def stack_add_command(source: CommandSource, name, command: str, line=0):
 	if storage.contains(name):
 		stack = storage.get(name)
@@ -153,6 +160,7 @@ def stack_add_command(source: CommandSource, name, command: str, line=0):
 				line -= 1
 			else:
 				line = len(commands)
+			command = use_interpreter(source, command)
 			commands.insert(line, command)
 			storage.change_command(name, commands)
 		except Exception as e:
@@ -169,6 +177,7 @@ def stack_add_command(source: CommandSource, name, command: str, line=0):
 		print_message(source, tr('stack_add_command.unknown_stack', name))
 
 
+@new_thread('edit_command')
 def stack_edit_command(source: CommandSource, name, command: str, line: int):
 	if storage.contains(name):
 		stack = storage.get(name)
@@ -176,6 +185,7 @@ def stack_edit_command(source: CommandSource, name, command: str, line: int):
 			return
 		try:
 			commands = stack.command
+			command = use_interpreter(source, command)
 			commands[line-1] = command
 			storage.change_command(name, commands)
 		except Exception as e:
@@ -255,34 +265,96 @@ def del_command_stack(source: CommandSource, name):
 		print_message(source, tr('del_command_stack.unknown_stack', name))
 
 
-@new_thread('send_command')
-def send_command_stack(source: CommandSource, name):
-	if storage.contains(name):
-		stack = storage.get(name)
-		if req_perm(source, stack.perm):
-			return
-		try:
-			for command in stack.command:
-				if command[:2] == '!!':
-					print(command)
-					server_inst.execute_command(command, source)
-				elif command[0] == '/':
-					source.get_server().execute(command)
-				else:
-					source.get_server().say(command)
-		except Exception as e:
-			print_message(source, tr('send_command_stack.fail', name, e))
-			server_inst.logger.exception('Failed to send command stack {}'.format(name))
+def interpreter(source: CommandSource, command: str) -> str:
+
+	carpet_bot = re.match('/player (.*) spawn', command)
+	if carpet_bot and isinstance(source, PlayerCommandSource):
+		api = source.get_server().get_plugin_instance('minecraft_data_api')
+		pos = api.get_player_coordinate(source.player)
+		face = api.get_player_info(source.player, 'Rotation')
+		dim = api.get_player_dimension(source.player)
+		dims = ['overworld', 'the_end', 'the_nether']
+		gamemode = api.get_player_info(source.player, 'playerGameType')
+		gamemodes = ['survival', 'creative', 'adventure', 'spectator']
+		bot = carpet_bot.group(1)
+		nodes = command.split(' ')
+		if len(nodes) > 4 and nodes[3] == 'in':
+			gamemode = nodes[4]
+		elif len(nodes) > 6 and nodes[3] == 'at':
+			pos = nodes[4:7]
+			if len(nodes) > 9 and nodes[7] == 'facing':
+				face = nodes[8:10]
+				if len(nodes) > 11 and nodes[10] == 'in':
+					dim = nodes[11]
+					if len(nodes) > 13 and nodes[12] == 'in':
+						gamemode = nodes[13]
+		command = f'/execute as {source.player} run player {bot} spawn at {pos[0]} {pos[1]} {pos[2]} facing {face[0]} {face[1]} in {dims[dim]} in {gamemodes[gamemode]}'
+
+	return command
+
+
+class Sender:
+	def __init__(self, source: CommandSource):
+		self.prev_send = []
+		self.source = source
+		self.nested_loops = []
+
+	def send_commands(self, name):
+		self.prev_send.append(name)
+		if storage.contains(name):
+			if self.prev_send.count(name) == 2:
+				names = ''
+				for sended in self.prev_send:
+					if sended == name:
+						names += f'§c{sended}§r'
+					else:
+						names += sended
+					names += ' §6->§r '
+				self.nested_loops.append(names[:-8])
+				return
+			stack = storage.get(name)
+			if req_perm(self.source, stack.perm):
+				return
+			try:
+				for command in stack.command:
+					if command[:2] == '!!':
+						if command[:9] == '!!ac send':
+							self.send_commands(command[10:])
+							self.prev_send.pop()
+						else:
+							print(command)
+							server_inst.execute_command(command, self.source)
+					elif command[0] == '/':
+						command = interpreter(self.source, command)
+						server_inst.execute(command)
+					else:
+						server_inst.say(command)
+			except Exception as e:
+				print_message(self.source, tr('send_command_stack.fail', name, e))
+				server_inst.logger.exception('Failed to send command stack {}'.format(name))
+			else:
+				print_message(
+					self.source,
+					RText(tr('send_command_stack.success', name)).
+					h(tr('command_stack_info.display')).
+					c(RAction.run_command, f'{Prefix} stack {name}'),
+					tell=False
+				)
 		else:
-			print_message(
-				source,
-				RText(tr('send_command_stack.success', name)).
-				h(tr('command_stack_info.display')).
-				c(RAction.run_command, f'{Prefix} stack {name}'),
-				tell=False
-			)
-	else:
-		print_message(source, tr('send_command_stack.unknown_stack', name))
+			print_message(self.source, tr('send_command_stack.unknown_stack', name))
+
+	def if_nested_loop(self):
+		if self.nested_loops:
+			for loop in self.nested_loops:
+				print_message(self.source, tr('send_command_stack.nested_loop', loop))
+
+
+@new_thread('send_command')
+@spam_proof
+def send_command_stack(source: CommandSource, name):
+	s = Sender(source)
+	s.send_commands(name)
+	s.if_nested_loop()
 
 
 def list_command_stack(source: CommandSource, *, keyword: Optional[str] = None, page: Optional[int] = None):
