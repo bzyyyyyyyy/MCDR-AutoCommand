@@ -187,3 +187,13 @@ The discription will be updated also
 ### perm
 
 The usage permission of this command stack is also the permission of using all `!!ac tc` commands execpt for `!!ac tc` itself
+
+## interpreter
+
+### /player `bot` spawn
+
+When a player is sending a command stack, if this kind of command is detected, it will be sent using the source of the player
+
+### /player `bot` spawn here
+
+When editing a command stack, if this kind of command is detected, it will be interpreted into /player `bot` spawn at ~ ~ ~ facing ~ ~ in `dim` in `gamemode`
