@@ -7,7 +7,7 @@
 
 需要 `v2.1.0` 以上的 [MCDReforged](https://github.com/Fallen-Breath/MCDReforged)
 
-[MinecraftDataAPI](https://github.com/MCDReforged/MinecraftDataAPI/)
+需要 [MinecraftDataAPI](https://github.com/MCDReforged/MinecraftDataAPI/)
 
 代码参考了 Fallen-Breath 的 [QuickBackupM](https://github.com/TISUnion/QuickBackupM)，[TimedQBM](https://github.com/TISUnion/TimedQBM) 和 [LocationMarker](https://github.com/TISUnion/LocationMarker)
 
