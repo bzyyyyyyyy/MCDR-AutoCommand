@@ -187,3 +187,13 @@
 ### perm
 
 该指令堆的使用权限也是除 `!!ac tc` 以外的所有 `!!ac tc` 指令的使用权限
+
+## 解释器
+
+### /player `bot` spawn
+
+在发送指令堆时，如果检测到该种指令，将会通过发送指令堆的玩家发送该指令
+
+### /player `bot` spawn here
+
+在编辑指令堆时，如果检测到该指令，会自动将其转换成 /player `bot` spawn at ~ ~ ~ facing ~ ~ in `dim` in `gamemode`
