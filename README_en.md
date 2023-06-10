@@ -148,7 +148,7 @@ When sending the command stack：
 
 If the command is starting with `/`, it will be sent to server’s standard input stream
 
-If the command is starting with `!!`, nothing is going to happen (this portion wasn't completed because of technical problems)
+If the command is starting with `!!`, it will be sent to MCDR’s command system (only some of the commands will work)
 
 Else the command will be broadcast
 
