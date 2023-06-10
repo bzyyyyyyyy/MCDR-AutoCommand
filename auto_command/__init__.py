@@ -264,7 +264,8 @@ def send_command_stack(source: CommandSource, name):
 		try:
 			for command in stack.command:
 				if command[:2] == '!!':
-					server_inst.execute_command(command, server_inst.get_plugin_command_source())
+					print(command)
+					server_inst.execute_command(command, source)
 				elif command[0] == '/':
 					source.get_server().execute(command)
 				else:
