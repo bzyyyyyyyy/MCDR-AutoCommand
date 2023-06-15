@@ -14,6 +14,7 @@ auto_command:
     §7{0} del §6<指令堆名>§r 删除指令堆§6<指令堆名>
     §7{0} list §a[<可选页号>]§r 显示所有指令堆及注释
     §7{0} search §6<关键字> §a[<可选页号>]§r 搜索指令堆，返回所有匹配项
+    §7{0} wait §b<秒> §r 等待§b<秒>§r（可将其添加到指令堆中）
     该插件自带两个§d使用权限§r为§d3§r的空指令堆§6<server_start>§r和§6<timed_command>
     服务器开启时自动依次发送§6<server_start>§r中的所有指令
     间隔§b<分钟>§r分钟自动依次发送§6<timed_command>§r中的所有指令
@@ -70,6 +71,12 @@ auto_command:
     count:
       list: 共有§6{}§r个指令堆
       search: 共找到§6{}§r个指令堆
+
+  wait:
+    help: 在指令堆中使用它
+    fail: |
+      指令堆：§6{} §r第§c{}§r行
+        §7{} §c{} §r<- 应为一个浮点数
 
   command_stack_info:
     name:

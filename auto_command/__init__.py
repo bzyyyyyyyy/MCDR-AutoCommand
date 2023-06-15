@@ -2,6 +2,7 @@ import os
 import re
 from typing import Any, Optional
 from math import ceil
+import time
 
 from mcdreforged.api.all import *
 
@@ -13,6 +14,7 @@ from auto_command.clock import TimedCommand
 class Config(Serializable):
 	minimum_stack_edit_perm: int = 3
 	stack_per_page: int = 10
+	time_after_execute: float = 0.1
 	timed_command_interval: float = 30.0
 	timed_command_enabled: bool = True
 
@@ -265,17 +267,17 @@ def del_command_stack(source: CommandSource, name):
 		print_message(source, tr('del_command_stack.unknown_stack', name))
 
 
-def interpreter(source: CommandSource, command: str) -> str:
+def interpreter(source: CommandSource, command: str, execute_as_player=False) -> str:
 
 	carpet_bot = re.match('/player (.*) spawn', command)
 	if carpet_bot and isinstance(source, PlayerCommandSource):
 		api = source.get_server().get_plugin_instance('minecraft_data_api')
 		pos = api.get_player_coordinate(source.player)
 		face = api.get_player_info(source.player, 'Rotation')
-		dim = api.get_player_dimension(source.player)
 		dims = ['overworld', 'the_end', 'the_nether']
-		gamemode = api.get_player_info(source.player, 'playerGameType')
+		dim = dims[api.get_player_dimension(source.player)]
 		gamemodes = ['survival', 'creative', 'adventure', 'spectator']
+		gamemode = gamemodes[api.get_player_info(source.player, 'playerGameType')]
 		bot = carpet_bot.group(1)
 		nodes = command.split(' ')
 		if len(nodes) > 4 and nodes[3] == 'in':
@@ -288,7 +290,11 @@ def interpreter(source: CommandSource, command: str) -> str:
 					dim = nodes[11]
 					if len(nodes) > 13 and nodes[12] == 'in':
 						gamemode = nodes[13]
-		command = f'/execute as {source.player} run player {bot} spawn at {pos[0]} {pos[1]} {pos[2]} facing {face[0]} {face[1]} in {dims[dim]} in {gamemodes[gamemode]}'
+		faceing = f'{face[0]} {face[1]}'
+		if execute_as_player:
+			command = f'/execute as {source.player} run player {bot} spawn at {pos[0]} {pos[1]} {pos[2]} facing {faceing} in {dim} in {gamemode}'
+		else:
+			command = f'/player {bot} spawn at {pos[0]} {pos[1]} {pos[2]} facing {faceing} in {dim} in {gamemode}'
 
 	return command
 
@@ -316,17 +322,25 @@ class Sender:
 			if req_perm(self.source, stack.perm):
 				return
 			try:
+				line = 0
 				for command in stack.command:
+					line += 1
 					if command[:2] == '!!':
 						if command[:9] == '!!ac send':
 							self.send_commands(command[10:])
 							self.prev_send.pop()
+						elif command[:9] == '!!ac wait':
+							try:
+								time.sleep(float(command[10:]))
+							except:
+								print_message(self.source, tr('wait.fail', name, line, '!!ac wait', command[10:]))
 						else:
 							print(command)
 							server_inst.execute_command(command, self.source)
 					elif command[0] == '/':
-						command = interpreter(self.source, command)
+						command = interpreter(self.source, command, execute_as_player=True)
 						server_inst.execute(command)
+						time.sleep(config.time_after_execute)
 					else:
 						server_inst.say(command)
 			except Exception as e:
@@ -373,7 +387,7 @@ def list_command_stack(source: CommandSource, *, keyword: Optional[str] = None, 
 		return RTextList(
 				RText('[▷]', RColor.green).h(tr('command_stack_info.send.hover')).c(RAction.run_command, f'{Prefix} send {stack_name}'),
 				RText(f' {stack_name} ', RColor.gold).h(tr('command_stack_info.display')).c(RAction.run_command, f'{Prefix} stack {stack_name}'),
-				RText(stacks[stack_name].perm).h(tr('list_command_stack.perm_hover')),
+				RText(stacks[stack_name].perm, RColor.light_purple).h(tr('list_command_stack.perm_hover')),
 				RText(' [i]', RColor.gray).h(stacks[stack_name].desc)
 			)
 	if page is None:
@@ -498,6 +512,9 @@ def register_command(server: PluginServerInterface):
 			then(Integer('page').at_min(1).
 				runs(lambda src, ctx: list_command_stack(src, keyword=ctx['keyword'], page=ctx['page']))
 			)
+		)).
+		then(Literal('wait').then(Float('sec').at_min(0.05).
+			runs(lambda src: print_message(src, tr('wait.help')))
 		)).
 		then(Literal('tc').
 			runs(lambda src: info_command_stack(src, 'timed_command')).

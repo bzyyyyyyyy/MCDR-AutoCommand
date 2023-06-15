@@ -37,6 +37,8 @@ I referred to [QuickBackupM](https://github.com/TISUnion/QuickBackupM)，[TimedQ
 
 `!!ac search <keyword> [<page>]` Search for command stack. It gives back all command stacks that matches
 
+`!!ac wait <sec>` wait`<sec>` (add it to the command stack)
+
 This plugin has two builtin command stacks (permission:3) which are `<server_start>` and `<timed_command>`
 
 This plugin send all the command in the `<server_start>` in sequence automatically after server started
@@ -86,6 +88,12 @@ Default: `10`
 After using `!!ac list <page>` or `!!ac search <keyword> <page>`
 
 the limit of command stacks showing on each page
+
+#### time_after_execute
+
+Default：`0.1`
+
+the seconds waited after executing command starting with `/`
 
 #### timed_command_interval
 

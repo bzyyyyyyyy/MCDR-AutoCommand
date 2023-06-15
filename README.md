@@ -37,6 +37,8 @@
 
 `!!ac search <keyword> [<page>]` 搜索指令堆，返回所有匹配项
 
+`!!ac wait <sec>` 等待`<sec>`（可将其添加到指令堆中）
+
 该插件自带两个`<permission>`为`3`的空指令堆`<server_start>`和`<timed_command>`
 
 服务器开启时自动依次发送`<server_start>`中的所有指令
@@ -86,6 +88,12 @@
 使用 `!!ac list <page>` 或 `!!ac search <keyword> <page>` 后
 
 每一页显示的指令堆数量
+
+#### time_after_execute
+
+默认值：`0.1`
+
+执行以 `/` 开头的指令后等待的秒数
 
 #### timed_command_interval
 

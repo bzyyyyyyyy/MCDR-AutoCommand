@@ -14,6 +14,7 @@ auto_command:
     §7{0} del §6<name>§r Delete this command stack
     §7{0} list §a[<page>]§r Display command stacks. §a[<page>] §ris optional
     §7{0} search §6<keyword> §a[<page>]§r Search for command stack. It gives back all command stacks that matches
+    §7{0} wait §b<sec> §r wait for §b<sec> §r(add it to the command stack)
     This plugin has two builtin command stacks (§dpermission:3§r) which are §6<server_start> §rand §6<timed_command>
     This plugin send all the command in the §6<server_start>§r in sequence automatically after server started
     This plugin send all the command in the §6<timed_command>§r in sequence every <minutes>
@@ -70,6 +71,12 @@ auto_command:
     count:
       list: §6{} §rcommand stacks
       search: Find §6{} §rcommand stacks
+
+  wait:
+    help: use it in a command stack
+    fail: |
+      command stack: §6{} §rline: §c{}
+        §7{} §c{} §r<- shoud be a float
   
   command_stack_info:
     name:
