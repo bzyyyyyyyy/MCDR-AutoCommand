@@ -1,4 +1,5 @@
 PLUGIN_ID = 'auto_command'
-Prefix = '!!ac'
 CONFIG_FILE = 'auto_command.json'
-STORAGE_FILE = 'command_stacks.json'
+COMMAND_TIMEOUT = 10
+DEFAULT_TIME_INTERVAL_UNIT = 'm'
+DEFAULT_WAIT_UNIT = 's'

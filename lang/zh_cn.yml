@@ -1,67 +1,102 @@
 auto_command:
-  help_message: |
-    ------ {1} v{2} ------
-    一个支持将指令§6打包成指令堆§r&§b自动发送§r的插件
-    §7{0}§r 显示帮助信息
-    §7{0} make §6<指令堆名> §d<使用权限> §e[<可选注释>]§r 创建一个新指令堆
-    §7{0} stack §6<指令堆名> §r 显示§6<指令堆名>§r的信息和其中的所有指令及注释
-    §7{0} stack §6<指令堆名> §r§7add §6<指令>§r 在§6<指令堆名>§r的末尾添加一行指令
-    §7{0} stack §6<指令堆名> §r§7before §6<指令行> <指令>§r 在§6<指令堆名>§r的§6<指令行>§r前添加一行指令
-    §7{0} stack §6<指令堆名> §r§7edit §6<指令行> <指令>§r 将§6<指令行>§r的指令改为§6<指令>
-    §7{0} stack §6<指令堆名> §r§7del §6[<可选指令行>]§r 删除§6<指令堆名>§r中§6<可选指令行>§r的命令（如果§6<可选指令行>§r为空，则删除§6<指令堆名>§r中的最后一行指令）
-    §7{0} stack §6<指令堆名> §r§7perm §d<使用权限>§r 将§6<指令堆名>§r的使用权限更改为§d<使用权限>
-    §7{0} send §6<指令堆名>§r 依次发送§6<指令堆名>§r中的所有指令
-    §7{0} del §6<指令堆名>§r 删除指令堆§6<指令堆名>
-    §7{0} list §a[<可选页号>]§r 显示所有指令堆及注释
-    §7{0} search §6<关键字> §a[<可选页号>]§r 搜索指令堆，返回所有匹配项
-    §7{0} wait §b<秒> §r 等待§b<秒>§r（可将其添加到指令堆中）
-    该插件自带两个§d使用权限§r为§d3§r的空指令堆§6<server_start>§r和§6<timed_command>
-    服务器开启时自动依次发送§6<server_start>§r中的所有指令
-    间隔§b<分钟>§r分钟自动依次发送§6<timed_command>§r中的所有指令
-    §7{0} tc§r 显示§6<timed_command>§r的信息和其中的所有指令及注释
-    §7{0} tc enable§r 启动发送指令定时器
-    §7{0} tc disable§r 关闭发送指令定时器
-    §7{0} tc set_interval §b<分钟>§r 设置发送指令定时器的时间间隔，单位分钟
-    §7{0} tc reset_timer§r 重置发送指令定时器
-  
+  help_message:
+    simple: |
+      ------ {1} v{2} ------
+      一个支持将指令§6打包成指令堆§r&§b自动发送§r的插件
+      §7{0}§r 显示简化帮助信息
+      §7{0} help§r 显示详细帮助信息
+      §7{0} list §a[<可选页号>]§r 显示所有指令堆及注释
+      §7{0} search §6<关键字> §a[<可选页号>]§r 搜索指令堆，返回所有匹配项
+      §7{0} send §6<指令堆名>§r 依次发送指令堆中的所有指令
+      §7{0} make §6<指令堆名> §d<使用权限>§r 创建一个新指令堆
+      §7{0} del §6<指令堆名>§r 删除指令堆，要求全字匹配
+      §7{0} stack §6<指令堆名>§r 显示指令堆的详细信息
+      §7{0} §6<关键字> §a[<可选页号>]§r 同§7{0} search
+      服务器开启时会自动发送指令堆§6<{3}>
+
+    full: |
+      ------ {1} v{2} ------
+      一个支持将指令§6打包成指令堆§r&§b自动发送§r的插件
+      §7{0}§r 显示帮助信息
+      §7{0} help§r 显示详细帮助信息
+      §7{0} list §a[<可选页号>]§r 显示所有指令堆及注释
+      §7{0} search §6<关键字> §a[<可选页号>]§r 搜索指令堆，返回所有匹配项
+      §7{0} send §6<指令堆名> §7[async]§r 依次发送指令堆中的所有指令（将其添加到指令堆中时，如果末尾添加了[async]，则同步发送此指令堆）
+      §7{0} make §6<指令堆名> §d<使用权限> §b[<分钟>] §e[<可选注释>]§r 创建一个新指令堆（如果§b[<分钟>]§r不为0，则指令堆间隔§b[<分钟>]§r发送一次）
+      §7{0} del §6<指令堆名>§r 删除指令堆，要求全字匹配
+      §7{0} stack §6<指令堆名>§r 显示指令堆的详细信息
+      §7{0} stack §6<指令堆名> §7add §6<指令>§r 在指令堆的末尾添加一行指令
+      §7{0} stack §6<指令堆名> §7before §6<指令行> <指令>§r 在指令堆的§6<指令行>§r前添加一行指令
+      §7{0} stack §6<指令堆名> §7edit §6<指令行> <指令>§r 将§6<指令行>§r的指令改为§6<指令>
+      §7{0} stack §6<指令堆名> §7del §6[<可选指令行>]§r 删除指令堆中§6<可选指令行>§r的命令（如果§6<可选指令行>§r为空，则删除指令堆中的最后一行指令）
+      §7{0} stack §6<指令堆名> §7rename §6<新指令堆名>§r 重命名指令堆
+      §7{0} stack §6<指令堆名> §7perm §d<使用权限>§r 更改指令堆的使用权限
+      §7{0} stack §6<指令堆名> §7interval §b<分钟>§r 更改指令堆的发送间隔时间
+      §7{0} stack §6<指令堆名> §7desc §e<注释>§r 更改指令堆的注释
+      §7{0} stack §6<指令堆名> §7record§r 录制指令到指令堆
+      §7{0} wait §b<时间> §r 等待§b<时间>§r后执行下一行指令（可将其添加到指令堆中）
+      §7{0} white §6<表达式>§r 将匹配正则表达式的指令加入白名单
+      §7{0} black §6<表达式>§r 将匹配正则表达式的指令加入黑名单
+      §7{0} §6<关键字> §a[<可选页号>]§r 同§7{0} search
+      服务器开启时会自动发送指令堆§6<{3}>
+
+    hover: 点击以填入§7{}
+    wait: 等待§b{}§r后发送下一条指令。此指令只在指令堆中生效
+    perm:
+      header: "将匹配正则表达式§6'{}'§r的指令加入{}。此指令只在指令权限堆中生效"
+      black: 黑名单
+      white: 白名单
+
   make_command_stack:
-    exist: 指令堆§6{}§r已存在，无法添加
     fail: 指令堆§6{}§r添加§c失败§r：{}
     success: 指令堆§6{}§r添加§a成功
-  
+
   stack_add_command:
-    unknown_stack: 未找到指令堆§6{}§r，无法添加指令
-    fail: 指令添加§c失败§r：§6{}
+    fail: 指令添加§c失败§r：{}
     success: §a成功§r添加指令到§6{}§r中的第§6{}§r行
-  
+
   stack_edit_command:
-    unknown_stack: 未找到指令堆§6{}§r，无法编辑指令
-    fail: 指令编辑§c失败§r：§6{}
+    fail: 指令编辑§c失败§r：{}
     success: §a成功§r编辑§6{}§r中的第§6{}§r行指令
-  
+
   stack_del_command:
-    unknown_stack: 未找到指令堆§6{}§r，无法删除指令
-    fail: 指令删除§c失败§r：§6{}
+    fail: 指令删除§c失败§r：{}
     success: §a成功§r删除§6{}§r中的第§6{}§r行指令
-  
-  stack_perm:
-    unknown_stack: 未找到指令堆§6{}§r，无法修改使用权限
-    fail: 修改使用权限§c失败§r：§6{}
-    success: §a成功§r修改使用权限：§6{}
-  
+
+  stack_change_name:
+    fail: 重命名指令堆§6{}§c失败§r：{}
+    success: §a成功§r重命名§6{}§r为§6{}
+
+  stack_change_perm:
+    fail: 修改指令堆§6{}§r使用权限§c失败§r：{}
+    success: §a成功§r修改§6{}§r的使用权限
+
+  stack_change_interval:
+    fail: 修改指令堆§6{}§r时间间隔§c失败§r：{}
+    success: §a成功§r修改§6{}§r的时间间隔
+
+  stack_change_desc:
+    fail: 修改指令堆§6{}§r注释§c失败§r：{}
+    success: §a成功§r修改§6{}§r的注释
+
+  stack_record:
+    start: 开始录制指令堆§6{}
+    stop: 停止录制指令堆§6{}
+    fail: 录制§6{}§c失败§r：{}
+    success: §a成功§r{}
+
   del_command_stack:
-    unknown_stack: 未找到指令堆§6{}§r，无法删除
     fail: 指令堆§6{}§r删除§c失败§r：{}
     success: 指令堆§6{}§r删除§a成功
-  
+
   send_command_stack:
-    unknown_stack: 未找到指令堆§6{}§r，无法发送
     fail: 指令堆§6{}§r发送§c失败§r：{}
+    fail_line: 发送指令§c失败§r，指令堆：§6{} §r行：§6{} §r-> {}
     success: 指令堆§6{}§r发送§a成功
-    nested_loop: 检测到嵌套循环：{}
-  
+
   list_command_stack:
     perm_hover: 使用权限
+    interval_hover: 间隔时间
     page_prev:
       Y: 点击显示上一页
       N: 已经是第一页了
@@ -72,19 +107,19 @@ auto_command:
       list: 共有§6{}§r个指令堆
       search: 共找到§6{}§r个指令堆
 
-  wait:
-    help: 在指令堆中使用它
-    fail: |
-      指令堆：§6{} §r第§c{}§r行
-        §7{} §c{} §r<- 应为一个浮点数
-
   command_stack_info:
-    name:
-      指令堆名：§6{}
+    rename:
+      header: 指令堆名：§6{}
+      hover: 点击更改指令堆名
     perm:
       header: §d使用权限§r：§d{}
       hover: 点击更改使用权限
-    desc: 详情：{}
+    interval:
+      header: §b时间间隔§r：§b{}
+      hover: 点击更改时间间隔
+    desc:
+      header: 详情：{}
+      hover: 点击更改详情
     send:
       header: ">>> §a发送指令堆 §r<<<"
       hover: 点击发送指令堆
@@ -96,27 +131,27 @@ auto_command:
     add:
       header: ">>> §a添加一行指令 §r<<<"
       hover: 点击添加一行指令
+    record:
+      header: ">>> §a录制指令开/关 <<<"
+      hover: 点击开/关录制指令
     display: 点击查看指令堆详细信息
-  
+
   server_start_desc: 服务器开启时发送指令堆
-  timed_command_desc: 间隔§b{}§r分钟发送指令堆
+  command_perm_desc: 匹配权限{}及以下的玩家能够添加的指令
 
-  tc:
-    set_interval: 定时器触发间隔已设置为§b{0}§r分钟
-    reset_timer: 定时器已重置
-    on_unload: 插件卸载，停止时钟
-    on_remove: 插件被移除，停止时钟
-    set_enabled:
-      timer: "定时器已{0}"
-      start: 启动
-      stop: 关闭
+  start_timer:
+    fail: §6{}§r的定时器启动§c失败§r：{}
+    start: §6{}§r的定时器已启动
+    reset: §6{}§r的定时器已重置
+  stop_timer:
+    fail: §6{}§r的定时器关闭§c失败§r：{}
+    success: §6{}§r的定时器已关闭
 
-  unknown_command:
-    text: 参数错误！请输入§7{0}§r以获取插件信息
-    hover: 点击查看帮助
-  command:
-    permission_denied: 权限不足
-    unknown_command_stack: 未找到指令堆§6{}
-  register:
-    summary_help: 编辑/发送§6指令堆§r&§b自动发送指令
-    show_help: 点击查看帮助信息
+  fail_msg:
+    unknown_stack: 未找到指令堆§6{}
+    stack_exists: 指令堆§6{}§r已存在
+    permission_denied: 权限不足，需要权限：§d{}§r 你的权限：§d{}
+    recursion: 检测到递归：{}
+    time_format_mismatch: 时间格式错误：§b{}
+    get_gametick_timeout: 获取gametick超时
+    zero_time_interval: 时间间隔不能为§b0
